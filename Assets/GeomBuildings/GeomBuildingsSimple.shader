@@ -1,20 +1,15 @@
-﻿Shader "Custom/GeomBuildings"
+﻿Shader "Custom/GeomBuildingsSimple"
 {
 	Properties
 	{
-		_GroundColor("_GroundColor",Color) = (0.4,1,0.4,1)
+		//_GroundColor("_GroundColor",Color) = (0.4,1,0.4,1)
 		_Height("_Height",Range(0,3)) = 1
 		_Width("_Width",Range(0,1)) = 1
 		_MainTex ("_MainTex (RGBA)", 2D) = "white" {}
-		_WidthUV ("_WidthUV",Range(0.5,10)) = 1
-		_HeightUV ("_HeightUV",Range(0.5,5)) = 1
-
-		[Gamma] _Metallic ("Metallic", Range(0, 1)) = 0
-		_Smoothness ("Smoothness", Range(0, 1)) = 0.1
 	}
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase" }
+		Tags { "RenderType"="Opaque" }
 		Cull Back
 
 		Pass
@@ -24,7 +19,7 @@
 			#pragma fragment frag
 			#pragma geometry geom
 			
-			#include "UnityPBSLighting.cginc"
+			#include "UnityCG.cginc"
 
 			struct appdata
 			{
@@ -47,16 +42,11 @@
 				float4 normal : NORMAL;
 				float4 color : COLOR;
 				float4 texcoord : TEXCOORD0;
-				float3 worldPos : TEXCOORD2;
 			};
 
-			float4 _GroundColor;
+			//float4 _GroundColor;
 			float _Height, _Width;
 			sampler2D _MainTex;
-			float _HeightUV;
-			float _WidthUV;
-			float _Metallic;
-			float _Smoothness;
 			
 			float random(float2 seed)
 			{
@@ -82,8 +72,6 @@
 			float2 CalculateUV(float2 pos)
 			{
 				float2 uv = 0;
-
-
 
 				return uv;
 			}
@@ -129,116 +117,113 @@
 
 				//Lid =======================================================
 
-				float h = _Height * random(v0.xy* 345324.324f);
-				o.normal = float4(0,1,0,1);
-				//normalize(cross(input[1].worldPosition.xyz - input[0].worldPosition.xyz, input[2].worldPosition.xyz - input[0].worldPosition.xyz));
+				float h = _Height * random(i[0].vertex.xz* 345324.324f);
 
 				float4 lid0 = v0 +  i[0].normal * h;
 				o.color = i[0].color;
 				o.vertex = UnityObjectToClipPos(lid0);
+				o.normal = i[0].normal;
 				o.texcoord.x = step(v1.x,v0.x) * step(v2.x,v0.x);
 				o.texcoord.y = step(v1.y,v0.y) * step(v2.y,v0.y);
 				o.texcoord.zw = 0;
-				o.worldPos = mul(unity_ObjectToWorld, lid0);
 				triangleStream.Append(o);
 
 				float4 lid1 = v1 + i[1].normal * h;
 				o.color = i[0].color;
 				o.vertex = UnityObjectToClipPos(lid1);
+				o.normal = i[1].normal;
 				o.texcoord.x = step(v0.x,v1.x) * step(v2.x,v1.x);
 				o.texcoord.y = step(v0.y,v1.y) * step(v2.y,v1.y);
 				o.texcoord.zw = 0;
-				o.worldPos = mul(unity_ObjectToWorld, lid1);
 				triangleStream.Append(o);
 
 				float4 lid2 = v2 + i[2].normal * h;
 				o.color = i[0].color;
 				o.vertex = UnityObjectToClipPos(lid2);
+				o.normal = i[2].normal;
 				o.texcoord.x = step(v0.x,v2.x) * step(v1.x,v2.x);
 				o.texcoord.y = step(v0.y,v2.y) * step(v1.y,v2.y);
 				o.texcoord.zw = 0;
-				o.worldPos = mul(unity_ObjectToWorld, lid2);
 				triangleStream.Append(o);
 
 				triangleStream.RestartStrip();
 
 				//Side - 2 & 0 = id 2 ======================================================
-				o.normal = float4(0,0,1,1);
 				if(longestLengthid != 2)
 				{
-					o.color = _GroundColor;
+					//o.color = _GroundColor;
 
 					o.vertex = UnityObjectToClipPos(v2);
-					o.texcoord = float4(1 * (1-w) * _WidthUV,0,0,0) ;
-					o.worldPos = mul(unity_ObjectToWorld, v2);
+					o.normal = i[2].normal;
+					o.texcoord = float4(1,0,0,0);
 					triangleStream.Append(o);
 
 					o.vertex = UnityObjectToClipPos(v0);
+					o.normal = i[0].normal;
 					o.texcoord = float4(0,0,0,0);
 					triangleStream.Append(o);
 
 					o.vertex = UnityObjectToClipPos(lid2);
-					o.texcoord = float4(1 * (1-w) * _WidthUV,1 * h*_HeightUV,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, lid2);
+					o.normal = i[2].normal;
+					o.texcoord = float4(1,1,0,0);
 					triangleStream.Append(o);
 					
 					o.vertex = UnityObjectToClipPos(lid0);
-					o.texcoord = float4(0,1 * h*_HeightUV,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, lid0);
+					o.normal = i[0].normal;
+					o.texcoord = float4(0,1,0,0);
 					triangleStream.Append(o);
 
 					triangleStream.RestartStrip();
 				}
 
 				//Side - 1 & 2 = id 1 =======================================================
-				o.normal = float4(-1,0,-1,1);
 				if(longestLengthid != 1)
 				{
 					o.vertex = UnityObjectToClipPos(v1);
-					o.texcoord = float4(1 * (1-w) * _WidthUV,0,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, v1);
+					o.normal = i[1].normal;
+					o.texcoord = float4(1,0,0,0);
 					triangleStream.Append(o);
 
 					o.vertex = UnityObjectToClipPos(v2);
+					o.normal = i[2].normal;
 					o.texcoord = float4(0,0,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, v2);
 					triangleStream.Append(o);
 
 					o.vertex = UnityObjectToClipPos(lid1);
-					o.texcoord = float4(1 * (1-w) * _WidthUV,1 * h*_HeightUV,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, lid1);
+					o.normal = i[1].normal;
+					o.texcoord = float4(1,1,0,0);
 					triangleStream.Append(o);
 					
 					o.vertex = UnityObjectToClipPos(lid2);
-					o.texcoord = float4(0,1 * h*_HeightUV,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, lid2);
+					o.normal = i[2].normal;
+					o.texcoord = float4(0,1,0,0);
 					triangleStream.Append(o);
 
 					triangleStream.RestartStrip();
 				}
 
 				//Side - 0 & 1 = id 0 =======================================================
-				o.normal = float4(1,0,0,1);
+
 				if(longestLengthid != 0)
 				{
 					o.vertex = UnityObjectToClipPos(v0);
-					o.texcoord = float4(1 * (1-w) * _WidthUV,0,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, v0);
+					o.normal = i[0].normal;
+					o.texcoord = float4(1,0,0,0);
 					triangleStream.Append(o);
 
 					o.vertex = UnityObjectToClipPos(v1);
+					o.normal = i[1].normal;
 					o.texcoord = float4(0,0,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, v1);
 					triangleStream.Append(o);
 
 					o.vertex = UnityObjectToClipPos(lid0);
-					o.texcoord = float4(1  * (1-w) * _WidthUV,1 * h*_HeightUV,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, lid0);
+					o.normal = i[0].normal;
+					o.texcoord = float4(1,1,0,0);
 					triangleStream.Append(o);
 					
 					o.vertex = UnityObjectToClipPos(lid1);
-					o.texcoord = float4(0,1 * h*_HeightUV,0,0);
-					o.worldPos = mul(unity_ObjectToWorld, lid1);
+					o.normal = i[1].normal;
+					o.texcoord = float4(0,1,0,0);
 					triangleStream.Append(o);
 
 					triangleStream.RestartStrip();
@@ -247,37 +232,9 @@
 
 			fixed4 frag (g2f i) : SV_Target
 			{
-				//fixed4 col = tex2D(_MainTex,i.texcoord); //* i.color;
+				fixed4 col = tex2D(_MainTex,i.texcoord); //* i.color;
 
-				i.normal = normalize(i.normal);
-				float3 lightDir = _WorldSpaceLightPos0.xyz;
-				float3 viewDir = normalize(_WorldSpaceCameraPos - i.worldPos);
-
-				float3 lightColor = _LightColor0.rgb;
-				float3 albedo = tex2D(_MainTex, i.texcoord).rgb;
-
-				float3 specularTint;
-				float oneMinusReflectivity;
-				albedo = DiffuseAndSpecularFromMetallic(
-					albedo, _Metallic, specularTint, oneMinusReflectivity
-				);
-				
-				UnityLight light;
-				light.color = lightColor;
-				light.dir = lightDir;
-				light.ndotl = DotClamped(i.normal, lightDir);
-				UnityIndirect indirectLight;
-				indirectLight.diffuse = 0;
-				indirectLight.specular = 0;
-
-				return UNITY_BRDF_PBS(
-					albedo, specularTint,
-					oneMinusReflectivity, _Smoothness,
-					i.normal, viewDir,
-					light, indirectLight
-				);
-
-				//return col;
+				return col;
 			}
 			ENDCG
 		}
