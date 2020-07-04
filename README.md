@@ -9,6 +9,8 @@ Tested with : Win DX11
 | `RadialCircle` | <img src="READMEimages/RadialCircle.gif" width="50%"> | xxxxxx |
 | `GeomBuildings` | <img src="READMEimages/GeomBuildings.gif" width="50%"> | xxxxxx |
 | `FacingImage` | <img src="READMEimages/FacingImage.gif" width="50%"> | xxxxxx |
+| `FakeHalo` | <img src="READMEimages/FakeHalo.gif" width="50%"> | xxxxxx |
+
 -------------
 
 Disclaimer: The stuff here are not optimized. Just for fun.
