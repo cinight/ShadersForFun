@@ -25,7 +25,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Offset: 1.08
-    - _Progress: 0.45
+    - _Progress: 0
     - _RotSpeed: 0.618
     - _Scale: 2.48
     - _Step: 10
