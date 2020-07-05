@@ -10,6 +10,8 @@ Tested with : Win DX11
 | `GeomBuildings` | <img src="READMEimages/GeomBuildings.gif" width="50%"> | xxxxxx |
 | `FacingImage` | <img src="READMEimages/FacingImage.gif" width="50%"> | xxxxxx |
 | `FakeHalo` | <img src="READMEimages/FakeHalo.gif" width="50%"> | xxxxxx |
+| `CutoutTransition` | <img src="READMEimages/CutoutTransition.gif" width="50%"> | xxxxxx |
+| `Shatter` | <img src="READMEimages/Shatter.gif" width="50%"> | xxxxxx |
 
 -------------
 
