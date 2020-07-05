@@ -12,6 +12,7 @@ Tested with : Win DX11
 | `FakeHalo` | <img src="READMEimages/FakeHalo.gif" width="50%"> | xxxxxx |
 | `CutoutTransition` | <img src="READMEimages/CutoutTransition.gif" width="50%"> | xxxxxx |
 | `Shatter` | <img src="READMEimages/Shatter.gif" width="50%"> | xxxxxx |
+| `TessellationTail` | <img src="READMEimages/TessellationTail.gif" width="50%"> | xxxxxx |
 
 -------------
 
