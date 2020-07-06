@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ImageShading
+  m_Shader: {fileID: 4800000, guid: d23346104a4449c4c8a71ec18fd0f535, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _2LevelTex:
+        m_Texture: {fileID: 2800000, guid: f487adf0a68ab2d4a828d932e15df469, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AOTex:
+        m_Texture: {fileID: 2800000, guid: db3ea1caee706b64a8f8e8e1c367fab6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AlbedoTex:
+        m_Texture: {fileID: 2800000, guid: ae55ebbacddb57c459d8940d55bca24a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AlphaTex:
+        m_Texture: {fileID: 2800000, guid: 43335c3728a24f04984e5d53caedb084, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ColorMaskTex:
+        m_Texture: {fileID: 2800000, guid: 30ecd8f493f269d4594e9d141e9a189e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HighlightTex:
+        m_Texture: {fileID: 2800000, guid: d20295915068a8a43bb5aadc8cf03a89, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SketchTex:
+        m_Texture: {fileID: 2800000, guid: 84f0aa7e025815744bbf8cec3e326d98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Brightness1: 1.62
+    - _Brightness2: 0.63
+    - _Brightness3: 1
+    - _Brightness4: 0.57
+    - _Brightness5: 1.51
+    - _Brightness6: 1.14
+    - _Brightness7: 2
+    - _Contrast1: 1.59
+    - _Contrast2: 1.13
+    - _Contrast3: 1
+    - _Contrast4: 1.55
+    - _Contrast5: 1.18
+    - _Contrast6: 0.33
+    - _Contrast7: 0.99
+    m_Colors:
+    - _Col1: {r: 0.6320754, g: 0.3190192, b: 0.5234965, a: 1}
+    - _Col2: {r: 0.1981132, g: 0.042052336, b: 0.09407265, a: 1}
+    - _Col3: {r: 0.19437523, g: 0.4528302, b: 0.41277295, a: 1}
+    - _Col4: {r: 0.8396226, g: 0.6754371, b: 0.20990565, a: 1}
+    - _Col5: {r: 0.4528302, g: 0.1986472, b: 0.31648842, a: 1}
+    - _Col6: {r: 1, g: 0, b: 0.21568632, a: 1}
+    - _Col7: {r: 0.754717, g: 0.69419724, b: 0.69419724, a: 1}
+    - _ColAmbient: {r: 0.51054645, g: 0.5195286, b: 0.7264151, a: 1}
+    - _ColLight: {r: 0.735849, g: 0.24898136, b: 0, a: 1}
