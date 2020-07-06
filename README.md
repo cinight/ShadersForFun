@@ -13,7 +13,7 @@ Tested with : Win DX11
 | `CutoutTransition` | <img src="READMEimages/CutoutTransition.gif" width="50%"> | xxxxxx |
 | `Shatter` | <img src="READMEimages/Shatter.gif" width="50%"> | xxxxxx |
 | `TessellationTail` | <img src="READMEimages/TessellationTail.gif" width="50%"> | xxxxxx |
-
+| `ImageShading` | <img src="READMEimages/ImageShading.gif" width="50%"> | xxxxxx |
 -------------
 
 Disclaimer: The stuff here are not optimized. Just for fun.
