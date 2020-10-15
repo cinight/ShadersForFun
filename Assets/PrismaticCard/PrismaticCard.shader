@@ -2,11 +2,13 @@
 {
     Properties
     {
-        _MainTex ("_MainTex", 2D) = "white" {}
+        _Color ("_Color", color) = (1,1,1,1)
+        _MainTex ("Texture", 2D) = "white" {}
         _MaskTex ("_MaskTex", 2D) = "white" {}
         _BumpTex ("_BumpTex", 2D) = "white" {}
-        _RampTex ("_RampTex", 2D) = "white" {}
-        _Density("_Density", Range(0, 10)) = 1
+        [NoScaleOffset] _RampTex ("_RampTex", 2D) = "white" {}
+        _Distance("_Distance", Range(0, 10)) = 1
+        _Strength("_Strength", Range(0, 5)) = 1
     }
     SubShader
     {
@@ -22,63 +24,83 @@
 
             struct appdata
             {
+                float3 nor : NORMAL;
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
-                float3 nor : NORMAL;
             };
 
             struct v2f
             {
+                float3 wnor : NORMAL;
                 float2 uv : TEXCOORD0;
-                float3 wViewDir : TEXCOORD1;
+                float3 viewDir : TEXCOORD1;
                 float4 vertex : SV_POSITION;
-                float3 nor : NORMAL;
             };
 
             sampler2D _MainTex;
-            sampler2D _MaskTex;
-            sampler2D _BumpTex;
-            sampler2D _RampTex;
-
             float4 _MainTex_ST;
+            sampler2D _MaskTex;
+            sampler2D _RampTex;
+            sampler2D _BumpTex;
             float4 _BumpTex_ST;
 
-            float _Density;
+            float4 _Color;
+            float _Distance;
+            float _Strength;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-
                 float3 wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
-                o.wViewDir = normalize(UnityWorldSpaceViewDir(wpos));
-                float3 wnor = mul(unity_ObjectToWorld, v.nor).xyz;
-                o.nor = wnor;
+                o.viewDir = normalize(UnityWorldSpaceViewDir(wpos));
+                o.wnor = mul(unity_ObjectToWorld, v.nor).xyz;
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+             float IsNan_float(float In)
             {
-                float2 uv1 = TRANSFORM_TEX(i.uv, _MainTex);
-                float2 uv2 = TRANSFORM_TEX(i.uv, _BumpTex);
+                return (In < 0.0 || In > 0.0 || In == 0.0) ? 0 : 1;
+            }
 
-                fixed4 col = tex2D(_MainTex, uv1);
-                fixed4 mask = tex2D(_MaskTex, uv1);
-                half3 tnor = UnpackNormal(tex2D(_BumpTex, uv2));
+            float4 frag (v2f i) : SV_Target
+            {
+                //Main texture
+                float2 uvMain = TRANSFORM_TEX(i.uv, _MainTex);
+                float4 col = tex2D(_MainTex, uvMain) * _Color;
+                float mask = tex2D(_MaskTex, uvMain).r;
 
-                float3 L = tnor + abs(i.nor);
-                float3 V = i.wViewDir;
+                //Normal map
+                float2 uvBump = TRANSFORM_TEX(i.uv, _BumpTex);
+                float3 bump = UnpackNormal(tex2D(_BumpTex, uvBump));
+                float3 wbump = normalize(mul(unity_ObjectToWorld, float4(bump, 0)));
 
-                float factor =  dot(L, V);
-                factor *= _Density;
-                float3 rcol = tex2D(_RampTex, float2(factor,0.5f));
+                //Diffraction Grating from https://www.alanzucconi.com/2017/07/15/cd-rom-shader-2/
+                // float3 L = dot(i.wnor + wbump, _WorldSpaceLightPos0.xyz);
+                // float3 V = i.viewDir;
+                // float3 T = wbump;
+                // float cos_ThetaL = dot(L, T);
+                // float cos_ThetaV = dot(V, T);
+                // float u = abs(cos_ThetaL - cos_ThetaV);
+                // float w = u * _Distance;
 
+                float3 L = wbump;
+                float3 V = i.viewDir;
+                float Theta = dot(L, V);
+                float u = abs(Theta);
+                float w = u * _Distance;
+
+                //Rainbow color
+                float3 prismastic =  tex2D(_RampTex, float2(w,0.5f));
+
+                //Blend the colors
                 float4 result = col;
-                result.rgb *= rcol * 2;
-                result.rgb += col;
+                result.rgb += prismastic * _Strength;
+                result = lerp(col,result,mask);
 
-                return lerp(col,result,mask);
+                //Apply Mask
+                return result;
             }
             ENDCG
         }
