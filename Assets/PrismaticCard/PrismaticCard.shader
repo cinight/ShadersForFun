@@ -24,14 +24,14 @@
 
             struct appdata
             {
-                float3 nor : NORMAL;
+                //float3 nor : NORMAL;
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                float3 wnor : NORMAL;
+                //float3 wnor : NORMAL;
                 float2 uv : TEXCOORD0;
                 float3 viewDir : TEXCOORD1;
                 float4 vertex : SV_POSITION;
@@ -55,7 +55,7 @@
                 o.uv = v.uv;
                 float3 wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.viewDir = normalize(UnityWorldSpaceViewDir(wpos));
-                o.wnor = mul(unity_ObjectToWorld, v.nor).xyz;
+                //o.wnor = mul(unity_ObjectToWorld, v.nor).xyz;
                 return o;
             }
 
