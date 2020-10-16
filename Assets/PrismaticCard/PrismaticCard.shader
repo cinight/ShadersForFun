@@ -59,11 +59,6 @@
                 return o;
             }
 
-             float IsNan_float(float In)
-            {
-                return (In < 0.0 || In > 0.0 || In == 0.0) ? 0 : 1;
-            }
-
             float4 frag (v2f i) : SV_Target
             {
                 //Main texture
