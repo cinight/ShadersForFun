@@ -77,7 +77,7 @@
                 float3 wbump = normalize(mul(unity_ObjectToWorld, float4(bump, 0)));
 
                 //Diffraction Grating from https://www.alanzucconi.com/2017/07/15/cd-rom-shader-2/
-                // float3 L = dot(i.wnor + wbump, _WorldSpaceLightPos0.xyz);
+                // float3 L = dot(i.wnor, _WorldSpaceLightPos0.xyz);
                 // float3 V = i.viewDir;
                 // float3 T = wbump;
                 // float cos_ThetaL = dot(L, T);
