@@ -4,6 +4,8 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
+        _Strips ("_Strips",Range(10,20)) = 10
+        _DepthFactor ("_DepthFactor",Range(0.1,100)) = 1
     }
     SubShader
     {
@@ -35,6 +37,9 @@
             sampler2D _DepthTex;
             float4 _DepthTex_ST;
 
+            int _Strips;
+            float _DepthFactor;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -47,9 +52,20 @@
 
             float4 frag (v2f i) : SV_Target
             {
-                float4 col = tex2D(_MainTex, i.u.xy);
-                float depth = tex2D(_DepthTex, i.uv.zw).r;
-                col.rgb = depth;
+                //https://developer.nvidia.com/gpugems/gpugems/part-vi-beyond-triangles/chapter-41-real-time-stereograms
+
+                float b = 1/float(_Strips);
+                float c = 1/float(_Strips+1);
+
+                float2 ouv = i.uv.zw;
+
+                float2 depthUV = ouv;
+                depthUV.x = b * ( ouv.x / c-1 );
+                float depth = tex2D(_DepthTex, depthUV).r;
+                depth = depth*c*_DepthFactor;
+
+                float2 newUV = float2( i.uv.x+depth-c , i.uv.y );
+                float4 col = tex2D( _MainTex , newUV );
 
                 return col;
             }
