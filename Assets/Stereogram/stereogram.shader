@@ -3,7 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _DepthTex ("_DepthTex", 2D) = "white" {}
+        [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
     }
     SubShader
     {
@@ -40,15 +40,15 @@
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv.xy = TRANSFORM_TEX(v.uv, _MainTex);
-                o.uv.zw = TRANSFORM_TEX(v.uv, _DepthTex);
+                o.uv.zw = v.uv; //For DepthTex
 
                 return o;
             }
 
             float4 frag (v2f i) : SV_Target
             {
-                float4 col = tex2D(_MainTex, i.uv);
-                float depth = tex2D(_DepthTex, i.uv).r;
+                float4 col = tex2D(_MainTex, i.u.xy);
+                float depth = tex2D(_DepthTex, i.uv.zw).r;
                 col.rgb = depth;
 
                 return col;
