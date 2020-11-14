@@ -5,7 +5,7 @@
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_PatternTex ("_PatternTex", 2D) = "white" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
-        _DepthFactor ("_DepthFactor",Range(0.1,100)) = 1
+        _DepthFactor ("_DepthFactor",Range(0,1)) = 1
     }
     SubShader
     {
