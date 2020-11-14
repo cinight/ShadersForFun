@@ -5,7 +5,7 @@
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_PatternTex ("_PatternTex", 2D) = "white" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
-        _DepthFactor ("_DepthFactor",Range(0,1)) = 1
+        _DepthFactor ("_DepthFactor",Range(0,0.1)) = 0.1
     }
     SubShader
     {
@@ -81,11 +81,6 @@
                 uv.x -= stripWidth; //take the previous strip
                 uv.x += depth;
                 float4 col = tex2D( _MainTex , uv );
-
-                if(_CurrentStrip == 1) col+=float4(0.1,0,0,1);
-                else if(_CurrentStrip == 2) col+=float4(0.1,0.1,0,1);
-                else if(_CurrentStrip == 3) col+=float4(0,0.1,0,1);
-                else if(_CurrentStrip == 4) col+=float4(0,0.1,0.1,1);
 
                 return col;
             }
