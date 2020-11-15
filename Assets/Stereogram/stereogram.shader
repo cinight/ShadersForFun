@@ -5,7 +5,6 @@
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_PatternTex ("_PatternTex", 2D) = "white" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
-        _DepthFactor ("_DepthFactor",Range(0,0.1)) = 0.1
     }
     SubShader
     {
@@ -51,6 +50,7 @@
 
             float4 frag (v2f i) : SV_Target
             {
+                //reference:
                 //https://developer.nvidia.com/gpugems/gpugems/part-vi-beyond-triangles/chapter-41-real-time-stereograms
                 //https://www.ime.usp.br/~otuyama/stereogram/basic/index.html
 
@@ -62,14 +62,14 @@
                     return tex2D( _PatternTex , uv * _NumOfStrips );
                 }
 
-                //don't change anything if out of current strip
+                //don't change anything in previous strip
                 float stripWidth = 1/float(_NumOfStrips);
                 float stripRangeMin = float(_CurrentStrip) * stripWidth;
                 float stripRangeMax = float(_CurrentStrip + 1) * stripWidth;
-                if( uv.x < stripRangeMin || uv.x > stripRangeMax )
+                if( uv.x < stripRangeMin )
                 {
                     return tex2D( _MainTex , uv );
-                } 
+                }
 
                 //depth
                 float2 depthUV = uv;
@@ -79,7 +79,7 @@
 
                 //distort the texture
                 uv.x -= stripWidth; //take the previous strip
-                uv.x += depth;
+                uv.x *= 1+depth;
                 float4 col = tex2D( _MainTex , uv );
 
                 return col;
