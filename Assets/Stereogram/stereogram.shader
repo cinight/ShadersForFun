@@ -4,8 +4,10 @@
     {
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_PatternTex ("_PatternTex", 2D) = "white" {}
+        [NoScaleOffset]_PatternTex2 ("_PatternTex2", 2D) = "black" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
         _DepthContrast ("_DepthContrast", Range(0,10)) = 10
+        _ScrollingSpeed ("_ScrollingSpeed", Range(0,1)) = 1
     }
     SubShader
     {
@@ -33,10 +35,12 @@
             };
 
             sampler2D _PatternTex;
+            sampler2D _PatternTex2;
             sampler2D _MainTex;
             sampler2D _DepthTex;
 
             float _DepthContrast;
+            float _ScrollingSpeed;
 
             int _CurrentStrip;
             int _NumOfStrips;
@@ -71,7 +75,22 @@
                     float2 patternUV = uv;
                     patternUV.x *= _NumOfStrips;
                     patternUV.y *=  _ScreenParams.y / _ScreenParams.x * _NumOfStrips;
-                    return tex2D( _PatternTex , patternUV );
+                    float2 patternUV2 = patternUV;
+
+                    //scrolling UV
+                    patternUV.x -= _Time.x * _ScrollingSpeed;
+                    patternUV2.x += _Time.x * _ScrollingSpeed;
+
+                    //pattern
+                    float4 p1 = tex2D( _PatternTex , patternUV );
+                    float4 p2 = tex2D( _PatternTex2 , patternUV2 );
+
+                    //result
+                    //float4 p = lerp(p1,p2,p2.a);
+                    float4 p = min(p1,p2);
+                    p.a = 1;
+
+                    return p;
                 }
 
                 //don't change anything in previous strip
@@ -95,8 +114,8 @@
                 //distort the texture
                 uv.x -= stripWidth; //take the previous strip
                 uv.x *= 1+depth;
-                float4 col = tex2D( _MainTex , uv );
 
+                float4 col = tex2D( _MainTex , uv );
                 return col;
             }
             ENDCG
