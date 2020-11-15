@@ -5,7 +5,7 @@
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_PatternTex ("_PatternTex", 2D) = "white" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
-        _DepthContrast ("_DepthContrast", Range(0,100)) = 10
+        _DepthContrast ("_DepthContrast", Range(0,10)) = 10
     }
     SubShader
     {
@@ -83,8 +83,9 @@
                 float2 depthUV = uv;
                 depthUV.x = depthUV.x * (1+stripWidth) - stripWidth ; //"shrink" it so it fit into remaining strips
                 float depth = tex2D(_DepthTex, depthUV).r;
-                depth *= _DepthContrast;
-                depth = Contrast(depth,_DepthContrast);
+                float odepth = depth;
+                depth = Contrast( depth * _DepthContrast , _DepthContrast );
+                depth *= odepth;
                 depth *= _DepthFactor;
 
                 //distort the texture
