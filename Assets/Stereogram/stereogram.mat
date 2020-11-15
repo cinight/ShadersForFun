@@ -66,7 +66,8 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthFactor: 0.1
+    - _DepthContrast: 19
+    - _DepthFactor: 0.01001001
     - _DepthMultiplier: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0

@@ -5,6 +5,7 @@
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_PatternTex ("_PatternTex", 2D) = "white" {}
         [NoScaleOffset]_DepthTex ("_DepthTex", 2D) = "white" {}
+        _DepthContrast ("_DepthContrast", Range(0,100)) = 10
     }
     SubShader
     {
@@ -35,6 +36,8 @@
             sampler2D _MainTex;
             sampler2D _DepthTex;
 
+            float _DepthContrast;
+
             int _CurrentStrip;
             int _NumOfStrips;
             float _DepthFactor;
@@ -46,6 +49,11 @@
                 o.uv = v.uv;
 
                 return o;
+            }
+
+            float3 Contrast(float3 col, float k) //k=1 is neutral, 0 to 2
+            {
+                return ((col - 0.5f) * max(k, 0)) + 0.5f;
             }
 
             float4 frag (v2f i) : SV_Target
@@ -75,6 +83,8 @@
                 float2 depthUV = uv;
                 depthUV.x = depthUV.x * (1+stripWidth) - stripWidth ; //"shrink" it so it fit into remaining strips
                 float depth = tex2D(_DepthTex, depthUV).r;
+                depth *= _DepthContrast;
+                depth = Contrast(depth,_DepthContrast);
                 depth *= _DepthFactor;
 
                 //distort the texture
