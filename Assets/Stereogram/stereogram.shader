@@ -67,7 +67,11 @@
                 //the first reference strip
                 if(_CurrentStrip == 0)
                 {
-                    return tex2D( _PatternTex , uv * _NumOfStrips );
+                    //pattern tiling
+                    float2 patternUV = uv;
+                    patternUV.x *= _NumOfStrips;
+                    patternUV.y *=  _ScreenParams.y / _ScreenParams.x * _NumOfStrips;
+                    return tex2D( _PatternTex , patternUV );
                 }
 
                 //don't change anything in previous strip
