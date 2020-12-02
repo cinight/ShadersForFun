@@ -9,6 +9,7 @@ Tested with : Win DX11
 | `PrismaticCard` | <img src="READMEimages/PrismaticCard.gif" width="400"> |
 | `WaterDrop` | <img src="READMEimages/WaterDrop.gif" width="400"> |
 | `ImageShading` | <img src="READMEimages/ImageShading.gif" width="400"> |
+| `ParallaxEffect` | <img src="READMEimages/ParallaxEffect.PNG" width="400"> |
 | `FillingSphere` | <img src="READMEimages/FillingSphere.gif" width="400"> |
 | `RadialCircle` | <img src="READMEimages/RadialCircle.gif" width="400"> |
 | `GeomBuildings` | <img src="READMEimages/GeomBuildings.gif" width="400"> |
