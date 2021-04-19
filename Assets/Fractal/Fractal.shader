@@ -58,18 +58,21 @@ Shader "Custom/Fractal"
                 float2 uv = i.uv;
                 float2 z = uv;
                 float2 c = float2(_cX,_cY);
-                float F=0.0f;
+                float F = 0.0f;
 
                 for(int i=0; i<_Iteration; i++) 
                 {
+                    //Repeat
+                    z = abs(z);
+
                     //Julia
-                    float2 n = c_mul(z,z) + c;
+                    //float2 n = c_mul(z,z) + c;
 
                     //Mandelbrot
                     //float2 n = c_mul(z,z) + uv;
 
                     //Custom1
-                    //float2 n = c_mul(z,uv) + c_mul(z,z) + c_cjg(c);
+                    float2 n = c_mul(z+c,z-c);
                     
                     if( c_mag(n) > 10000.0f )
                     {
@@ -90,7 +93,7 @@ Shader "Custom/Fractal"
                 Fo = ((Fo - 0.5f) * max(_SmoothStep, 0)) + 0.5f; //adjust contrast
 
                 //Fractal uv outside
-                float4 colo = Fo;
+                float4 colo = tex2D(_MainTex, float2(Fo,0.5f));
                 //float2 Fuvo = abs(uv*Fo*5.0f);
                 //Fuvo = frac(Fuvo);
                 //float4 colo = tex2D(_MainTex, Fuvo);

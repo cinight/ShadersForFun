@@ -15,6 +15,7 @@ Tested with : Win DX11
 | `GeomBuildings` | <img src="READMEimages/GeomBuildings.gif" width="400"> |
 | `FacingImage` | <img src="READMEimages/FacingImage.gif" width="400"> |
 | `FakeHalo` | <img src="READMEimages/FakeHalo.gif" width="400"> |
+| `Fractal` | <img src="READMEimages/Fractal.PNG" width="400"> |
 | `CutoutTransition` | <img src="READMEimages/CutoutTransition.gif" width="400"> |
 | `Shatter` | <img src="READMEimages/Shatter.gif" width="400"> |
 | `TessellationTail` | <img src="READMEimages/TessellationTail.gif" width="400"> |
