@@ -1,6 +1,7 @@
 ﻿//Good Fractal learning resources:
 //https://darkeclipz.github.io/fractals/paper/Fractals%20&%20Rendering%20Techniques.html
 //https://www.youtube.com/watch?v=6IWXkV82oyY
+//https://www.iquilezles.org/www/index.htm
 
 Shader "Custom/Fractal"
 {
