@@ -1,4 +1,5 @@
 ﻿//Good Fractal learning resources:
+//http://nuclear.mutantstargoat.com/articles/sdr_fract/
 //https://darkeclipz.github.io/fractals/paper/Fractals%20&%20Rendering%20Techniques.html
 //https://www.youtube.com/watch?v=6IWXkV82oyY
 //https://www.iquilezles.org/www/index.htm
@@ -9,6 +10,8 @@ Shader "Custom/Fractal"
     {
         _MainTex ("Texture", 2D) = "white" {}
         [IntRange] _Iteration("_Iteration",Range(1,50)) = 10
+        [Toggle(_TOGGLE_REPEAT)] _Repeat("_Repeat", Float) = 0
+        [KeywordEnum(Julia, Mandelbrot, Custom1, Custom2, Custom3)] _Fractal("_Fractal",Float) = 0
         _cX("_cX",Range(-2,1)) = -1.1
         _cY("_cY",Range(-2,1)) = -1.1
         _SmoothStep("_SmoothStep",Range(0,2)) = 1
@@ -22,6 +25,8 @@ Shader "Custom/Fractal"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile _FRACTAL_JULIA _FRACTAL_MANDELBROT _FRACTAL_CUSTOM1 _FRACTAL_CUSTOM2 _FRACTAL_CUSTOM3
+            #pragma multi_compile _ _TOGGLE_REPEAT
 
             #include "UnityCG.cginc"
             #include "ComplexOp.cginc"
@@ -63,18 +68,28 @@ Shader "Custom/Fractal"
 
                 for(int i=0; i<_Iteration; i++) 
                 {
-                    //Repeat
-                    z = abs(z);
+                    #if _TOGGLE_REPEAT
+                        z = abs(z);
+                    #endif
 
-                    //Julia
-                    //float2 n = c_mul(z,z) + c;
-
-                    //Mandelbrot
-                    //float2 n = c_mul(z,z) + uv;
-
-                    //Custom1
-                    float2 n = c_mul(z+c,z-c);
+                    //Fractal types
+                    float2 n = 0;
+                    #if _FRACTAL_JULIA
+                        n = c_mul(z,z) + c;
+                    #elif _FRACTAL_MANDELBROT
+                        n = c_mul(z,z) + uv;
+                    #elif _FRACTAL_CUSTOM1
+                        #if _TOGGLE_REPEAT
+                            uv = abs(uv);
+                        #endif
+                        n = c_mul( z-1 , c_mul(z,c) );
+                    #elif _FRACTAL_CUSTOM2
+                        n = c_mul(frac(z-c),frac(z*c));
+                    #elif _FRACTAL_CUSTOM3
+                        n = c_mul(atan(z),z+c);
+                    #endif
                     
+                    //Bounds
                     if( c_mag(n) > 10000.0f )
                     {
                         break;

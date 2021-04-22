@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fractal1
+  m_Name: Fractal_Custom1_3
   m_Shader: {fileID: 4800000, guid: 2c6813056d4b4f84aba9ba97666cca5b, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _FRACTAL_CUSTOM1 _TOGGLE_REPEAT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,14 +20,17 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 7314825707fb93b4682634e7068a14f0, type: 3}
-        m_Scale: {x: 2, y: 2}
+        m_Texture: {fileID: 2800000, guid: 3e63d187c5b4ec34faaffbd9f8d3148a, type: 3}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: -0.5, y: -0.5}
     m_Floats:
-    - _Iteration: 20
+    - _Fractal: 2
+    - _FractalType: 0
+    - _Iteration: 16
+    - _Repeat: 1
     - _Scale: 2.79
-    - _SmoothStep: 0.02
-    - _cX: -0.54
-    - _cY: -0.64
+    - _SmoothStep: 0.027
+    - _cX: 0.25
+    - _cY: -1.05
     m_Colors:
     - _c: {r: -1.19, g: -0.27, b: 1, a: 1}
