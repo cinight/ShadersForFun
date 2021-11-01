@@ -98,7 +98,7 @@
         		return o;
     		}
     
-			#ifdef UNITY_CAN_COMPILE_TESSELLATION
+			//#ifdef UNITY_CAN_COMPILE_TESSELLATION
 				HS_ConstantOut HSConstant( InputPatch<HS_In, 3> i )
 				{
 					HS_ConstantOut o = (HS_ConstantOut)0;
@@ -122,7 +122,7 @@
 					o.texcoord = i[uCPID].texcoord;
 					return o;
 				}
-			#endif
+			//#endif
 		
 		ENDCG
 
@@ -134,10 +134,10 @@
     		#pragma target 4.6
     		#pragma vertex VS
     		#pragma fragment PS
-			#ifdef UNITY_CAN_COMPILE_TESSELLATION
+			//#ifdef UNITY_CAN_COMPILE_TESSELLATION
 				#pragma hull HS
 				#pragma domain DS
-			#endif
+			//#endif
 
 			//uniform fixed4 _FillColor;
 
@@ -214,14 +214,14 @@
     		#pragma target 4.6
     		#pragma vertex VS
     		#pragma fragment PS
-			#ifdef UNITY_CAN_COMPILE_TESSELLATION
+			//#ifdef UNITY_CAN_COMPILE_TESSELLATION
 				#pragma hull HS
 				#pragma domain DS
-			#endif
+			//#endif
 			#pragma multi_compile_shadowcaster
 			#pragma fragmentoption ARB_precision_hint_fastest
 
-			#ifdef UNITY_CAN_COMPILE_TESSELLATION
+			//#ifdef UNITY_CAN_COMPILE_TESSELLATION
     		struct DS_Out
     		{
         		float4 pos    : SV_POSITION;
@@ -260,7 +260,7 @@
 		
 				return o;
 			}
-			#endif
+			//#endif
  
 			float4 PS (DS_Out i) : SV_Target
 			{
