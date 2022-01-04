@@ -3,17 +3,20 @@
 //https://darkeclipz.github.io/fractals/paper/Fractals%20&%20Rendering%20Techniques.html
 //https://www.youtube.com/watch?v=6IWXkV82oyY
 //https://www.iquilezles.org/www/index.htm
+//http://paulbourke.net/fractals/fracintro/
 
 Shader "Custom/Fractal"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        [IntRange] _Iteration("_Iteration",Range(1,50)) = 10
+        [IntRange] _Iteration("_Iteration",Range(1,300)) = 10
         [Toggle(_TOGGLE_REPEAT)] _Repeat("_Repeat", Float) = 0
-        [KeywordEnum(Julia, Mandelbrot, Custom1, Custom2, Custom3)] _Fractal("_Fractal",Float) = 0
-        _cX("_cX",Range(-2,1)) = -1.1
-        _cY("_cY",Range(-2,1)) = -1.1
+        [KeywordEnum(Julia, Mandelbrot, Custom1, Custom2, Custom3, Custom4, Custom5, Custom6)] _Fractal("_Fractal",Float) = 0
+        _cX("_cX",Range(-2,2)) = -1.1
+        _cY("_cY",Range(-2,2)) = -1.1
+        _cX2("_cX2",Range(-2,2)) = -1.1
+        _cY2("_cY2",Range(-2,2)) = -1.1
         _SmoothStep("_SmoothStep",Range(0,2)) = 1
     }
     SubShader
@@ -25,7 +28,7 @@ Shader "Custom/Fractal"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile _FRACTAL_JULIA _FRACTAL_MANDELBROT _FRACTAL_CUSTOM1 _FRACTAL_CUSTOM2 _FRACTAL_CUSTOM3
+            #pragma multi_compile _FRACTAL_JULIA _FRACTAL_MANDELBROT _FRACTAL_CUSTOM1 _FRACTAL_CUSTOM2 _FRACTAL_CUSTOM3 _FRACTAL_CUSTOM4 _FRACTAL_CUSTOM5 _FRACTAL_CUSTOM6
             #pragma multi_compile _ _TOGGLE_REPEAT
 
             #include "UnityCG.cginc"
@@ -45,8 +48,9 @@ Shader "Custom/Fractal"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            int _Iteration;
+            uint _Iteration;
             float _cX,_cY;
+            float _cX2,_cY2;
             float _SmoothStep;
 
             v2f vert (appdata v)
@@ -64,16 +68,17 @@ Shader "Custom/Fractal"
                 float2 uv = i.uv;
                 float2 z = uv;
                 float2 c = float2(_cX,_cY);
+                float2 c2 = float2(_cX2,_cY2);
                 float F = 0.0f;
 
-                for(int i=0; i<_Iteration; i++) 
+                for(uint i=0; i<_Iteration; i++) 
                 {
                     #if _TOGGLE_REPEAT
                         z = abs(z);
                     #endif
 
+                    float2 n = 1;
                     //Fractal types
-                    float2 n = 0;
                     #if _FRACTAL_JULIA
                         n = c_mul(z,z) + c;
                     #elif _FRACTAL_MANDELBROT
@@ -87,8 +92,16 @@ Shader "Custom/Fractal"
                         n = c_mul(frac(z-c),frac(z*c));
                     #elif _FRACTAL_CUSTOM3
                         n = c_mul(atan(z),z+c);
+                    #elif _FRACTAL_CUSTOM4
+                        n = c_mul(z,z+c);
+                    #elif _FRACTAL_CUSTOM5
+                        n = c_mul(sin(z) , z*c2) + c;
+                    #elif _FRACTAL_CUSTOM6
+                        n = c_mul(z,z) + c;
+                        n.x += min( c2.x, length(z-n) );
+                        n.y += min( c2.y, length(z-n) );
                     #endif
-                    
+
                     //Bounds
                     if( c_mag(n) > 10000.0f )
                     {
@@ -97,6 +110,7 @@ Shader "Custom/Fractal"
                     
                     z = n;
                     F = i;
+                    
                 }
 
                 //Fractal value - smooth
