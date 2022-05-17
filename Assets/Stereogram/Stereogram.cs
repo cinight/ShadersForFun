@@ -7,11 +7,6 @@ public class Stereogram : MonoBehaviour
     public Camera renderCamera;
     public Material blitMaterial;
     [Range(2,24)] public int _NumOfStrips = 10;
-
-    void Start()
-    {
-        Camera cam = GetComponent<Camera>();
-    }
     
     void OnRenderImage(RenderTexture src, RenderTexture dst)
     {
