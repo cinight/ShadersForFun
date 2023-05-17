@@ -1,4 +1,4 @@
-﻿Shader "Custom/Template"
+﻿Shader "Custom/Eye"
 {
     Properties
     {
@@ -61,17 +61,18 @@
                 float depth = depthTex.a;
 
                 float3 viewDir = normalize(i.viewDir);
+                float3 uvDir = normalize(mul(unity_WorldToObject, float4(viewDir,0)).xyz);
                 
                 //concave
                 float2 uv = i.uv;
                 float factor = dot(viewDir * _Intensity_Normal, i.wnor);
                 factor = saturate(factor);
-                uv -= (1.0-depth) * viewDir * lerp(_Intensity_Normal,_Intensity,factor);
+                uv -= (1.0-depth) * uvDir.xy * lerp(_Intensity_Normal,_Intensity,factor);
                 float4 col = tex2D(_MainTex, uv);
                 
                 //convex
                 uv = i.uv;
-                //uv += (1.0-depth) * viewDir *_Intensity;
+                uv += (1.0-depth) * uvDir.xy *_Intensity;
                 float4 refl = tex2D(_ReflTex, uv);
 
                 float4 result = col * shadow;
