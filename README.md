@@ -5,7 +5,7 @@ Tested with : Win DX11 \
 
 Most shader in this repo works for Built-in RP, and it will also work in older unity versions as Built-in RP didn't change for years. \
 Some of these Built-in RP shaders will also work for URP but note that they are not SRP batcher compatible. Need some small work to convert them properly. \
-Shaders named with URP will only work for URP.
+Shaders named with URP/HDRP will only work for URP/HDRP.
 
 | Scene | Image |
 | - | - |
@@ -30,6 +30,7 @@ Shaders named with URP will only work for URP.
 | `TessellationTail` | <img src="READMEimages/TessellationTail.gif" width="400"> |
 | `VertexDot` | <img src="READMEimages/VertexDot.gif" width="400"> |
 | `URPLitBreakdown` | <img src="READMEimages/URPLitBreakdown.JPG" width="400"> |
+| `HDRPLitBreakdown` | <img src="READMEimages/HDRPLitBreakdown.JPG" width="400"> |
 
 -------------
 
