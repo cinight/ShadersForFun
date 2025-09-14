@@ -1,6 +1,6 @@
 # ShadersForFun
 
-Unity version : 6000.0+ \
+Unity version : 6000.2+ \
 Tested with : Win DX11 \
 
 Most shader in this repo works for Built-in RP, and it will also work in older unity versions as Built-in RP didn't change for years. \
